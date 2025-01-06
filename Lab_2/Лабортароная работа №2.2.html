@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .controls {
+            margin: 10px;
+        }
+        .controls button {
+            margin-right: 10px;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            border-radius: 5px;
+        }
+        button[data-size="320"] { background-color: #32ff7e; }
+        button[data-size="768"] { background-color: #1dd1a1; }
+        button[data-size="1200"] { background-color: #ff3838; }
+
+        label {
+            font-weight: bold;
+        }
+
+        .palette {
+            margin: 0 auto;
+            display: grid;
+            gap: 25px;
+            background-color: black;
+            padding: 25px;
+            position: relative;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: minmax(150px, auto);
+            width: 1200px;
+        }
+
+        .box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .grid { 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 5px;
+            pointer-events: none;
+        }
+        .grid div {
+            border: 1px solid white;
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .box1  { background: #CD5C5C; grid-area: 1 / 1 / 2 / 7; }
+        .box2  { background: #DC143C; grid-area: 1 / 7 / 2 / 10; }
+        .box3  { background: #8B0000; grid-area: 1 / 10 / 2 / 14; }
+        
+        .box5  { background: #FFC0CB; grid-area: 2 / 1 / 3 / 14; }
+        .box6  { background: #C71585; grid-area: 3 / 5 / 4 / 14; }
+        .box7  { background: #FF69B4; grid-area: 3 / 1 / 4 / 5; }
+        .box8  { background: #ADFF2F; grid-area: 4 / 10 / 7 / 14; }
+        .box9  { background: #32CD32; grid-area: 4 / 7 / 5 / 10; }
+        .box10 { background: #006400; grid-area: 7 / 3 / 6 / 5; }
+        .box11 { background: #9ACD32; grid-area: 7 / 5 / 6 / 7; }
+        .box12 { background: #00FF00; grid-area: 6 / 1 / 4 / 7; }
+        .box13 { background: #00FA9A; grid-area: 5 / 7 / 6 / 10; }
+        .box14 { background: #2E8B57; grid-area: 7 / 3 / 6 / 1; }
+        .box15 { background: #808000; grid-area: 7 / 7 / 6 / 10; }
+        .box16 { background: #FFA07A; grid-area: 7 / 3 / 7 / 5; }
+        .box17 { background: #FF4500; grid-area: 7 / 7 / 7 / 12; }
+        .box18 { background: #BC8F8F; grid-area: 8 / 1 / 10 / 4; }
+        .box19 { background: #F4A460; grid-area: 8 / 4 / 9 / 10; }
+        .box20 { background: #D2691E; grid-area: 8 / 14 / 10 / 10; }
+        .box21 { background: #8B4513; grid-area: 9 / 4 / 9 / 7; }
+        
+        .box22 { background: #A52A2A; grid-area: 10 / 7 / 9 / 10; }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button data-size="320">320px</button>
+        <button data-size="768">768px</button>
+        <button data-size="1200">1200px</button>
+        <label> 
+            <input type="checkbox" id="gridToggle"> 
+            Сетка
+        </label>
+    </div>
+
+    <div class="palette" id="palette">
+        <div class="box box1">#CD5C5C</div>
+        <div class="box box2">#DC143C</div>
+        <div class="box box3">#8B0000</div>
+     
+        <div class="box box5">#FFC0CB</div>
+        <div class="box box6">#C71585</div>
+        <div class="box box7">#FF69B4</div>
+        <div class="box box8">#ADFF2F</div>
+        <div class="box box9">#32CD32</div>
+        <div class="box box10">#006400</div>
+        <div class="box box11">#9ACD32</div>
+        <div class="box box12">#00FF00</div>
+        <div class="box box13">#00FA9A</div>
+        <div class="box box14">#2E8B57</div>
+        <div class="box box15">#808000</div>
+        <div class="box box16">#FFA07A</div>
+        <div class="box box17">#FF4500</div>
+        <div class="box box18">#BC8F8F</div>
+        <div class="box box19">#F4A460</div>
+        <div class="box box20">#D2691E</div>
+        <div class="box box21">#8B4513</div>
+        <div class="box box22">#A52A2A</div>
+        <div class="grid" id="gridOverlay"></div>
+    </div>
+
+    <script>
+        const gridToggle = document.getElementById('gridToggle');
+        const gridOverlay = document.getElementById('gridOverlay');
+        const buttons = document.querySelectorAll('[data-size]');
+        const palette = document.getElementById('palette');
+
+        gridToggle.addEventListener('change', () => {
+            if (gridToggle.checked) {
+                gridOverlay.style.display = 'grid';
+                gridOverlay.innerHTML = '';
+                for (let i = 0; i < 48; i++) {
+                    const gridBlock = document.createElement('div');
+                    gridOverlay.appendChild(gridBlock);
+                }
+            } else {
+                gridOverlay.style.display = 'none';
+            }
+        });
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const size = button.getAttribute('data-size');
+                palette.style.width = `${size}px`;
+            });
+        });
+    </script>
+</body>
