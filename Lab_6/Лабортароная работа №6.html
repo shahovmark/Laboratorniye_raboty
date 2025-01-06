@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка на получение визы</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e8f4f8;
+            color: #4d2c91;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff6f61;
+            margin-top: 30px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #00bfae;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"], input[type="date"], input[type="tel"], input[type="email"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #b9f6ca;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #fff9c4;
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus, input[type="tel"]:focus, input[type="email"]:focus, select:focus, textarea:focus {
+            border-color: #ffcc00;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        button {
+            background-color: #ff8a80;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #d32f2f;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        .success {
+            color: green;
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Заявка на получение визы</h1>
+        <form id="visa-form">
+            <div class="form-group">
+                <label for="fullname">Фамилия, имя, отчество</label>
+                <input type="text" id="fullname" name="fullname" placeholder="Введите ФИО" required>
+                <div id="fullname-error" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="dob">Дата рождения</label>
+                <input type="date" id="dob" name="dob" required>
+                <div id="dob-error" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="gender">Пол</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Выберите пол</option>
+                    <option value="male">Мужской</option>
+                    <option value="female">Женский</option>
+                    <option value="other">Другой</option>
+                </select>
+                <div id="gender-error" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="nationality">Страна гражданства</label>
+                <input type="text" id="nationality" name="nationality" placeholder="Введите страну гражданства" required>
+                <div id="nationality-error" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="purpose">Цель визита</label>
+                <textarea id="purpose" name="purpose" placeholder="Опишите цель визита" required></textarea>
+                <div id="purpose-error" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="phone">Контактный телефон</label>
+                <input type="tel" id="phone" name="phone" placeholder="+7 (XXX) XXX-XXXX" required>
+                <div id="phone-error" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="email">Электронная почта</label>
+                <input type="email" id="email" name="email" placeholder="example@mail.com" required>
+                <div id="email-error" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="visa-type">Тип визы</label>
+                <select id="visa-type" name="visa-type" required>
+                    <option value="">Выберите тип визы</option>
+                    <option value="tourist">Туристическая</option>
+                    <option value="business">Деловая</option>
+                    <option value="student">Студенческая</option>
+                </select>
+                <div id="visa-type-error" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="consent">
+                    <input type="checkbox" id="consent" name="consent" required> Я согласен на обработку моих персональных данных.
+                </label>
+                <div id="consent-error" class="error"></div>
+            </div>
+            <div class="form-group">
+                <button type="submit">Отправить заявку</button>
+            </div>
+            <div id="form-message" class="success"></div>
+        </form>
+    </div>
+
+    <script>
+        
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId + '-error');
+            errorElement.textContent = message;
+        }
+
+        
+        function validateEmail(email) {
+            const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            return re.test(email);
+        }
+
+      
+        function validatePhone(phone) {
+            
+            const re = /^\+?(\d{1,3})?[\s\(\)-]?\d{1,4}[\s\(\)-]?\d{1,4}[\s\(\)-]?\d{1,4}$/;
+            return re.test(phone);
+        }
+
+        document.getElementById('visa-form').addEventListener('submit', function (e) {
+            e.preventDefault(); 
+
+            let isValid = true;
+            document.getElementById('form-message').textContent = ''; 
+
+            
+            const errorElements = document.querySelectorAll('.error');
+            errorElements.forEach(function (element) {
+                element.textContent = '';
+            });
+
+           
+            const fullname = document.getElementById('fullname').value;
+            if (!fullname) {
+                showError('fullname', 'Это поле обязательно для заполнения.');
+                isValid = false;
+            }
+
+            const dob = document.getElementById('dob').value;
+            if (!dob) {
+                showError('dob', 'Это поле обязательно для заполнения.');
+                isValid = false;
+            }
+
+            const gender = document.getElementById('gender').value;
+            if (!gender) {
+                showError('gender', 'Выберите пол.');
+                isValid = false;
+            }
+
+            const nationality = document.getElementById('nationality').value;
+            if (!nationality) {
+                showError('nationality', 'Это поле обязательно для заполнения.');
+                isValid = false;
+            }
+
+            const purpose = document.getElementById('purpose').value;
+            if (!purpose) {
+                showError('purpose', 'Это поле обязательно для заполнения.');
+                isValid = false;
+            }
+
+            const phone = document.getElementById('phone').value;
+            if (!phone || !validatePhone(phone)) {
+                showError('phone', 'Введите правильный номер телефона.');
+                isValid = false;
+            }
+
+            const email = document.getElementById('email').value;
+            if (!email || !validateEmail(email)) {
+                showError('email', 'Введите правильный email.');
+                isValid = false;
+            }
+
+            const visaType = document.getElementById('visa-type').value;
+            if (!visaType) {
+                showError('visa-type', 'Выберите тип визы.');
+                isValid = false;
+            }
+
+            const consent = document.getElementById('consent').checked;
+            if (!consent) {
+                showError('consent', 'Необходимо согласие на обработку персональных данных.');
+                isValid = false;
+            }
+
+            
+            if (isValid) {
+                const formMessage = document.getElementById('form-message');
+                formMessage.textContent = 'Заявка отправлена успешно!';
+                formMessage.style.color = 'green';
+
+               
+                document.getElementById('visa-form').reset();
+            }
+        });
+    </script>
+</body>
+</html>
+
