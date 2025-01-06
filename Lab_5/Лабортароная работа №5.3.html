@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка на одинаковые буквы</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        p {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+    <script>
+        function checkAnagram() {
+            let word1 = document.getElementById("word1").value.toLowerCase();
+            let word2 = document.getElementById("word2").value.toLowerCase();
+
+            let sortedWord1 = word1.split('').sort().join('');
+            let sortedWord2 = word2.split('').sort().join('');
+
+            if (sortedWord1 === sortedWord2) {
+                document.getElementById("result").innerText = "Слова состоят из одних и тех же букв.";
+            } else {
+                document.getElementById("result").innerText = "Слова не состоят из одних и тех же букв.";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Проверка на одинаковые буквы</h1>
+        <p>Введите два слова:</p>
+        <input type="text" id="word1" placeholder="Первое слово">
+        <br>
+        <input type="text" id="word2" placeholder="Второе слово">
+        <br>
+        <button onclick="checkAnagram()">Проверить</button>
+        <p id="result"></p>
+    </div>
+</body>
+</html>

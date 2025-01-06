@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Удаление элементов массива</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        p {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+    <script>
+        function isSpecialNumber(num) {
+            let integerPart = Math.floor(Math.abs(num));
+            let digits = integerPart.toString().split('');
+            let sumEven = 0, sumOdd = 0;
+
+            for (let i = 0; i < digits.length; i++) {
+                let digit = parseInt(digits[i]);
+
+                if (i % 2 === 0) {
+                    sumOdd += digit;
+                } else {
+                    sumEven += digit;
+                }
+            }
+
+            return sumOdd === sumEven;
+        }
+
+        function filterArray() {
+            let array = document.getElementById("arrayInput").value.split(',').map(Number);
+            let filteredArray = array.filter(num => !isSpecialNumber(num));
+            document.getElementById("result").innerText = "Отфильтрованный массив: " + filteredArray.join(', ');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Удаление элементов массива</h1>
+        <p>Введите массив действительных чисел (через запятую):</p>
+        <input type="text" id="arrayInput" placeholder="Пример: 123, 456, 789">
+        <br>
+        <button onclick="filterArray()">Удалить элементы</button>
+        <p id="result"></p>
+    </div>
+</body>
+</html>
