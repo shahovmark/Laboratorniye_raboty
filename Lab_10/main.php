@@ -2,9 +2,9 @@
 include 'db.php';
 session_start();
 
-$user = $_SESSION['user'] ?? null;  // Если пользователь не авторизован, то $user будет null
+$user = $_SESSION['user'] ?? null;  
 
-// Получаем книги из базы данных
+
 $stmt = $pdo->prepare("SELECT * FROM books");
 $stmt->execute();
 $books = $stmt->fetchAll();
@@ -100,7 +100,7 @@ $books = $stmt->fetchAll();
             text-decoration: underline;
         }
 
-        /* Современные кнопки для "Мой аккаунт" и "Выйти" */
+       
         .account-link,
         .logout-link {
             position: absolute;
@@ -121,11 +121,11 @@ $books = $stmt->fetchAll();
         }
 
         .account-link {
-            right: 120px; /* Чуть левее для "Мой аккаунт" */
+            right: 120px; 
         }
 
         .logout-link {
-            right: 20px; /* Правый угол */
+            right: 20px; 
         }
 
         .account-link:hover,
@@ -141,7 +141,7 @@ $books = $stmt->fetchAll();
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        /* Кнопка "Оформление заказа" */
+        
         .order-link,
         .address-link {
             font-size: 18px;
@@ -170,7 +170,7 @@ $books = $stmt->fetchAll();
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        /* Кнопка Войти в левом верхнем углу */
+        
         .login-link {
             position: absolute;
             top: 20px;
@@ -199,7 +199,7 @@ $books = $stmt->fetchAll();
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        /* Убираем подчеркивание у всех ссылок */
+        
         a {
             text-decoration: none;
         }
@@ -245,21 +245,7 @@ $books = $stmt->fetchAll();
 <?php endif; ?>
 
 <div class="book-container">
-    <?php
-    // Добавление 10 книг для отображения
-    $books = [
-        ['title' => 'Война и мир', 'author' => 'Лев Толстой', 'description' => 'Эпопея, посвященная событиям 1812 года в России.'],
-        ['title' => 'Преступление и наказание', 'author' => 'Федор Достоевский', 'description' => 'Роман о внутренней борьбе человека, преступлениях и последствиях.'],
-        ['title' => '1984', 'author' => 'Джордж Оруэлл', 'description' => 'Антиутопия о тоталитарном обществе.'],
-        ['title' => 'Гарри Поттер и философский камень', 'author' => 'Джоан Роулинг', 'description' => 'Приключения юного волшебника Гарри Поттера.'],
-        ['title' => 'Мастер и Маргарита', 'author' => 'Михаил Булгаков', 'description' => 'Роман, сочиненный в 1930-40-х годах в Советской России.'],
-        ['title' => 'Убийство в Восточном экспрессе', 'author' => 'Агата Кристи', 'description' => 'Детективный роман о расследовании убийства на поезде.'],
-        ['title' => 'Шерлок Холмс: Собрание рассказов', 'author' => 'Артур Конан Дойл', 'description' => 'Собрание рассказов о знаменитом сыщике.'],
-        ['title' => 'Алхимик', 'author' => 'Пауло Коэльо', 'description' => 'Роман о путешествии пастуха, стремящегося найти сокровища.'],
-        ['title' => 'Грозовой перевал', 'author' => 'Эмили Бронте', 'description' => 'Трагическая история любви в мрачном поместье на английской сельской местности.'],
-        ['title' => 'Старик и море', 'author' => 'Эрнест Хемингуэй', 'description' => 'Рассказ о старом рыболове и его борьбе с гигантской рыбой.']
-    ];
-    ?>
+
 
     <?php foreach ($books as $book): ?>
         <div class="book-tile">
@@ -285,17 +271,15 @@ $books = $stmt->fetchAll();
     </div>
 <?php endif; ?>
 
-<!-- Кнопка оформления заказа -->
+
 <div class="order-link">
     <a href="zakaz.php">Оформление заказа</a>
 </div>
 
-<!-- Кнопка адреса магазинов -->
+
 <div class="address-link">
     <a href="adresa.php">Адреса магазинов</a>
 </div>
 
 </body>
 </html>
-
-
