@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обзор языка SQL</title>
+    <link rel="stylesheet" href="normalize.css">
+    <style>
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('custom-font.woff2') format('woff2');
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h1, h2 {
+            font-family: 'CustomFont', sans-serif;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #34495e;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 14px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        nav {
+            margin-bottom: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        nav ul li {
+            margin-bottom: 10px;
+        }
+
+        .content img {
+            width: 300px;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+        }
+
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        ol {
+            margin: 20px 0;
+        }
+
+        ul {
+            margin: 20px 0;
+        }
+
+        .custom-bullet {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .custom-bullet li {
+            background: url('icon-1.svg') no-repeat left center;
+            padding-left: 30px;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background-color: #1e1e1e;
+            color: #dcdcdc;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        .tag-list {
+            margin-top: 30px;
+        }
+
+        .tag-list ul {
+            columns: 2;
+            list-style-type: square;
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #eef;
+        }
+
+        footer h2 {
+            margin-bottom: 15px;
+        }
+
+        .numbered-icons li {
+            list-style-type: none;
+            padding-left: 40px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .numbered-icons li::before {
+            content: url('icon-1.svg');
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .numbered-icons li:nth-child(2)::before {
+            content: url('icon-2.svg');
+        }
+
+        .numbered-icons li:nth-child(3)::before {
+            content: url('icon-3.svg');
+        }
+        .left-image {
+            float: left; 
+            margin-right: 10px; 
+            width: 150px;
+            height: auto;
+        }
+        .right-image {
+            float: right; 
+            margin-left: 10px; 
+            width: 150px;
+            height: auto;
+        }
+         .center-image {
+            display: block;
+            margin: 0 auto; 
+            width: 150px;
+            height: auto;
+        }
+        .numbered-icons {
+            list-style: none;
+            padding: 0;
+        }
+        .numbered-icons li {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 10px;
+        }
+        .numbered-icons li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: url(1687.png) no-repeat center center;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <h1>Обзор языка SQL</h1>
+
+    <nav>
+        <ul>
+            <li><a href="#history">История</a></li>
+            <li><a href="#overview">Обзор</a></li>
+            <li><a href="#examples">Примеры кода</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <section id="history">
+            <h2>История языка SQL</h2>
+            <img src="SQL.jpg" alt="История SQL" class="left-image">
+            <p>SQL (Structured Query Language, или Язык структурированных запросов) был изначально разработан в начале 1970-х годов в компании IBM Дональдом Д. Чемберлином и Рэймондом Ф. Бойсом. Они работали над проектом System R, целью которого было создание системы управления базами данных, основанной на реляционной модели данных, предложенной Эдгаром Ф. Коддом в 1970 году.</p>
+            <p>Изначально SQL назывался SEQUEL (Structured English Query Language), но позже название было изменено на SQL из-за товарных знаков. В 1979 году компания Relational Software (ныне Oracle Corporation) выпустила первую коммерческую реализацию SQL для своей системы Oracle V2, которая стала одной из самых популярных реляционных СУБД.</p>
+        </section>
+
+        <section id="overview">
+            <h2>Обзор языка SQL</h2>
+            <img src="sql_2.png" alt="Обзор SQL" class="right-image">
+            <p>SQL - это специализированный язык, используемый для программирования и управления данными в реляционных системах управления базами данных (СУБД). Основные функции SQL включают запрос данных, обновление данных и управление структурами базы данных.</p>
+
+            <ul>
+                <li>Язык определения данных (DDL)</li>
+                <li>Язык манипулирования данными (DML)</li>
+                <li>Язык управления данными (DCL)</li>
+            </ul>
+
+            <ol>
+                <li>Создание базы данных</li>
+                <li>Добавление данных в таблицы</li>
+                <li>Эффективный запрос данных</li>
+            </ol>
+
+            <ul class="numbered-icons">
+        <li>Платформенная независимость</li>
+        <li>Простота использования</li>
+        <li>Надежность</li>
+    </ul>
+        </section>
+
+        <section id="examples">
+            <style>
+  table.t1 {
+    margin: 1em auto;
+    border-collapse: collapse;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .t1 th, .t1 td {
+    padding: 4px 8px;
+  }
+  .t1 thead th {
+    background: #333;
+    text-transform: lowercase;
+    text-align: left;
+    font-size: 15px;
+    color: #fff;
+  }
+  .t1 tr {
+    border-right: 1px solid #ccc;
+  }
+  .t1 tbody tr {
+    border-bottom: 1px solid #ccc;
+  }
+  .t1 tbody tr:nth-child(odd) {
+    background: #f4f4f4;
+  }
+  .t1 tbody th, .t1 tbody tr:nth-child(even) td {
+    border-right: 1px solid #ccc;
+  }
+  .t1 tfoot th {
+    background: #333;
+    text-align: left;
+    font-weight: normal;
+    font-size: 10px;
+    color: #fff;
+  }
+  .t1 tr *:nth-child(3), .t1 tr *:nth-child(4) {
+    text-align: right;
+  }
+</style>
+
+<table class="t1">
+  <thead>
+    <tr>
+      <th>query_id</th>
+      <th>query</th>
+      <th>execution_time</th>
+      <th>rows_affected</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>SELECT * FROM users WHERE age > 30;</td>
+      <td>0.003s</td>
+      <td>150</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>UPDATE products SET price = price * 1.1 WHERE category = 'Electronics';</td>
+      <td>0.015s</td>
+      <td>500</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>DELETE FROM orders WHERE order_date < '2023-01-01';</td>
+      <td>0.020s</td>
+      <td>200</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th colspan="4">Total Queries Executed</th>
+    </tr>
+  </tfoot>
+</table>
+
+            <h2>Примеры кода на SQL</h2>
+            <img src="1c263f4b758cf7843d3fa2a8854ec4ae.png" alt="Примеры кода SQL" class="center-image">
+            <p>Ниже приведены примеры запросов на языке SQL:</p>
+
+            <pre><code class="sql">
+-- Создание таблицы
+CREATE TABLE Users (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT
+);
+
+-- Вставка данных в таблицу
+INSERT INTO Users (ID, Name, Age)
+VALUES (1, 'Алиса', 25);
+
+-- Запрос данных
+SELECT * FROM Users WHERE Age > 20;
+            </code></pre>
+        </section>
+    </div>
+
+    <footer>
+        <div class="tag-list">
+            <h2>Использованные HTML-теги и CSS-свойства</h2>
+            <ul>
+                <li>&lt;html&gt;</li>
+                <li>&lt;head&gt;</li>
+                <li>&lt;body&gt;</li>
+                <li>&lt;h1&gt;, &lt;h2&gt;</li>
+                <li>&lt;p&gt;</li>
+                <li>&lt;a&gt;</li>
+                <li>&lt;nav&gt;, &lt;ul&gt;, &lt;li&gt;</li>
+                <li>&lt;section&gt;</li>
+                <li>&lt;img&gt;</li>
+                <li>&lt;table&gt;, &lt;thead&gt;, &lt;tbody&gt;, &lt;tr&gt;, &lt;th&gt;, &lt;td&gt;</li>
+                <li>&lt;ol&gt;, &lt;ul&gt;</li>
+                <li>&lt;pre&gt;, &lt;code&gt;</li>
+                <li>font-family</li>
+                <li>font-size</li>
+                <li>background-color</li>
+                <li>color</li>
+                <li>margin</li>
+                <li>padding</li>
+                <li>border</li>
+                <li>text-align</li>
+                <li>list-style-type</li>
+                <li>display</li>
+                <li>columns</li>
+                <li>overflow-x</li>
+                <li>max-width</li>
+                <li>line-height</li>
+                <li>text-decoration</li>
+                <li>border-radius</li>
+                <li>src</li>
+            </ul>
+        </div>
+        <p>Информация была взята с данного сайта: <a href="https://www.w3schools.com/sql/" target="_blank">W3Schools SQL Tutorial</a>.</p>
+    </footer>
+</body>
+</html>
