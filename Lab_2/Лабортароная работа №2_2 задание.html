@@ -13,6 +13,7 @@
         .controls {
             margin: 10px;
         }
+
         .controls button {
             margin-right: 10px;
             padding: 5px 10px;
@@ -22,6 +23,7 @@
             color: white;
             border-radius: 5px;
         }
+
         button[data-size="320"] { background-color: #32ff7e; }
         button[data-size="768"] { background-color: #1dd1a1; }
         button[data-size="1200"] { background-color: #ff3838; }
@@ -39,7 +41,8 @@
             position: relative;
             grid-template-columns: repeat(12, 1fr);
             grid-auto-rows: minmax(150px, auto);
-            width: 1200px;
+            width: 100%;
+            max-width: 1200px;
         }
 
         .box {
@@ -63,10 +66,6 @@
             grid-auto-rows: 1fr;
             gap: 5px;
             pointer-events: none;
-        }
-        .grid div {
-            border: 1px solid white;
-            background: rgba(0, 0, 0, 0.9);
         }
 
         .box1  { background: #CD5C5C; grid-area: 1 / 1 / 2 / 7; }
@@ -92,6 +91,24 @@
         .box21 { background: #8B4513; grid-area: 9 / 4 / 9 / 7; }
         
         .box22 { background: #A52A2A; grid-area: 10 / 7 / 9 / 10; }
+
+        @media (max-width: 1200px) {
+            .palette {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .palette {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 320px) {
+            .palette {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
@@ -99,10 +116,7 @@
         <button data-size="320">320px</button>
         <button data-size="768">768px</button>
         <button data-size="1200">1200px</button>
-        <label> 
-            <input type="checkbox" id="gridToggle"> 
-            Сетка
-        </label>
+        <button id="gridToggle">Сетка</button>
     </div>
 
     <div class="palette" id="palette">
@@ -132,13 +146,16 @@
     </div>
 
     <script>
-        const gridToggle = document.getElementById('gridToggle');
+        const gridToggleButton = document.getElementById('gridToggle');
         const gridOverlay = document.getElementById('gridOverlay');
         const buttons = document.querySelectorAll('[data-size]');
         const palette = document.getElementById('palette');
 
-        gridToggle.addEventListener('change', () => {
-            if (gridToggle.checked) {
+        let gridVisible = false;
+
+        gridToggleButton.addEventListener('click', () => {
+            gridVisible = !gridVisible;
+            if (gridVisible) {
                 gridOverlay.style.display = 'grid';
                 gridOverlay.innerHTML = '';
                 for (let i = 0; i < 48; i++) {
@@ -153,8 +170,15 @@
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 const size = button.getAttribute('data-size');
-                palette.style.width = `${size}px`;
+                if (size === "320") {
+                    palette.style.width = '320px';
+                } else if (size === "768") {
+                    palette.style.width = '768px';
+                } else if (size === "1200") {
+                    palette.style.width = '1200px';
+                }
             });
         });
     </script>
 </body>
+</html>
