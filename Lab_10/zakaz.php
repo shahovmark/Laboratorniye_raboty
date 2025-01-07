@@ -9,9 +9,46 @@ if (!$user) {
     exit;
 }
 
+
 $stmt = $pdo->prepare("SELECT * FROM books");
 $stmt->execute();
 $books = $stmt->fetchAll();
+
+
+$stmt = $pdo->prepare("SELECT orders.*, books.title AS book_title FROM orders 
+                        JOIN books ON orders.book_id = books.id 
+                        WHERE orders.user_id = :user_id");
+$stmt->execute([':user_id' => $user['id']]);
+$orders = $stmt->fetchAll();
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+    $full_name = $_POST['full_name'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
+    $book_id = $_POST['book'];
+    $notes = $_POST['notes'] ?? '';
+
+    
+    $stmt = $pdo->prepare("INSERT INTO orders (user_id, book_id, full_name, phone, address, notes) 
+                           VALUES (:user_id, :book_id, :full_name, :phone, :address, :notes)");
+    $stmt->execute([
+        ':user_id' => $user['id'],
+        ':book_id' => $book_id,
+        ':full_name' => $full_name,
+        ':phone' => $phone,
+        ':address' => $address,
+        ':notes' => $notes
+    ]);
+
+    
+    echo '<script>
+            alert("Заказ оформлен! Мы скоро свяжемся с вами.");
+            window.location.href = "main.php";
+          </script>';
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -134,30 +171,28 @@ $books = $stmt->fetchAll();
             text-decoration: underline;
         }
 
-        .order-confirmation {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 30px 40px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 24px;
-            animation: fadeIn 2s forwards;
+        .order-list-container {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 800px;
         }
 
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.5);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
+        .order-list-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .order-list-container th,
+        .order-list-container td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .order-list-container th {
+            background-color: #5c6bc0;
+            color: white;
         }
 
         @media (max-width: 768px) {
@@ -180,7 +215,7 @@ $books = $stmt->fetchAll();
 <div class="order-form-container">
     <h2>Заполните форму для оформления заказа</h2>
 
-    <form id="orderForm" onsubmit="showConfirmation(event)">
+    <form id="orderForm" method="POST">
         <div class="form-group">
             <label for="full_name">ФИО:</label>
             <input type="text" name="full_name" id="full_name" required placeholder="Введите ваше ФИО">
@@ -219,26 +254,39 @@ $books = $stmt->fetchAll();
     </div>
 </div>
 
-<div class="order-confirmation" id="orderConfirmation">
-    Заказ оформлен! <br> Мы скоро свяжемся с вами.
+
+<div class="order-list-container">
+    <h2>Ваши заказы</h2>
+    <?php if (count($orders) > 0): ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>Книга</th>
+                    <th>ФИО</th>
+                    <th>Телефон</th>
+                    <th>Адрес</th>
+                    <th>Примечания</th>
+                    <th>Дата заказа</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($orders as $order): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($order['book_title']) ?></td>
+                        <td><?= htmlspecialchars($order['full_name']) ?></td>
+                        <td><?= htmlspecialchars($order['phone']) ?></td>
+                        <td><?= htmlspecialchars($order['address']) ?></td>
+                        <td><?= htmlspecialchars($order['notes']) ?></td>
+                        <td><?= htmlspecialchars($order['created_at']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>У вас нет заказов.</p>
+    <?php endif; ?>
 </div>
-
-<script>
-    function showConfirmation(event) {
-        event.preventDefault(); // Предотвращаем стандартное отправление формы
-        const form = document.getElementById('orderForm');
-        const confirmation = document.getElementById('orderConfirmation');
-
-        // Показываем анимацию
-        confirmation.style.display = 'block';
-
-        // Скрываем форму
-        form.style.display = 'none';
-
-        // Не отправляем форму и не перенаправляем на другую страницу
-        // Форма остается скрытой, а анимация появляется
-    }
-</script>
 
 </body>
 </html>
+
